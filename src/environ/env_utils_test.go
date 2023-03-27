@@ -44,9 +44,9 @@ func TestKeySearch(t *testing.T) {
 func TestUnset(t *testing.T) {
 
 	t.Run("unset a middle variable", func(t *testing.T){
-		key := "TEST"
+		key := "STATUS"
 		env := []string{"USER=dapaulin", "KEY=1997", "STATUS=www.google.com", "TEST=value"}
-		expected := []string{"USER=dapaulin", "KEY=1997", "STATUS=www.google.com"}
+		expected := []string{"USER=dapaulin", "KEY=1997", "TEST=value"}
 		assertUnset(t, key, expected, env)
 	})
 
