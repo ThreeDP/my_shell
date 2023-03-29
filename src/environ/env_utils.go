@@ -17,11 +17,15 @@ func (s *SysConfig) PrintEnv() {
 
 func (s *SysConfig) Unset(key string) {
 	if find, i := s.KeySearch(key); find == true {
-		s.env = append(s.env[:i], s.env[i+1:]...)
+		s.env = []string (append(s.env[:i], s.env[i+1:]...))
 	}
 }
 
 func (s *SysConfig) Export(var_env string) {
+	if find, i := s.KeySearch(var_env[:strings.IndexByte(var_env, '=')]); find == true {
+		s.env[i] = var_env
+		return
+	}
 	s.env = append(s.env, var_env)
 }
 

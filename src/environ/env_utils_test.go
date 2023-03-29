@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestReloadEnv(t *testing.T) {
+func TestCreateEnv(t *testing.T) {
 	t.Run("return the copy of the env", func(t *testing.T){
 		expected := os.Environ()
 		s := initSys(expected)
@@ -37,6 +37,18 @@ func TestKeySearch(t *testing.T) {
 	t.Run("looking for a key that doesn't exist", func(t *testing.T) {
 		s := initSys(os.Environ())
 		key := "YOURSHADOWNOTPASS"
+		s.compareResult(t, -1, false, key)
+	})
+
+	t.Run("try to search a nil key", func(t *testing.T) {
+		s := initSys(os.Environ())
+		var key string
+		s.compareResult(t, -1, false, key)
+	})
+
+	t.Run("try to find USER in a nil env", func(t *testing.T) {
+		s := initSys(os.Environ())
+		var key string
 		s.compareResult(t, -1, false, key)
 	})
 }
@@ -70,6 +82,39 @@ func TestUnset(t *testing.T) {
 		expected := []string{"USER=dapaulin", "KEY=1997", "STATUS=www.google.com", "TEST=value"}
 		assertUnset(t, key, expected, env)
 	})
+}
+
+func TestExport(t *testing.T) {
+	t.Run("Add a new var in the env", func(t *testing.T){
+		new_var := "NAVE=428A"
+		env := []string{"USER=dapaulin", "KEY=1997", "STATUS=www.google.com", "TEST=value"}
+		expected := []string{"USER=dapaulin", "KEY=1997", "STATUS=www.google.com", "TEST=value", new_var}
+		assertExport(t, new_var, expected, env)
+	})
+
+	t.Run("add a variable that already exists", func(t *testing.T){
+		new_var := "USER=carlito"
+		env := []string{"USER=dapaulin", "KEY=1997", "STATUS=www.google.com", "TEST=value"}
+		expected := []string{new_var, "KEY=1997", "STATUS=www.google.com", "TEST=value"}
+		assertExport(t, new_var, expected, env)
+	})
+/*
+	t.Run("try to pass a nil var", func(t *testing.T){
+		var new_var string
+		env := []string{"USER=dapaulin", "KEY=1997", "STATUS=www.google.com", "TEST=value"}
+		expected := []string{new_var, "KEY=1997", "STATUS=www.google.com", "TEST=value"}
+		assertExport(t, new_var, expected, env)
+	})
+	*/
+}
+
+func assertExport(t *testing.T, new_var string, expected, env []string) {
+	t.Helper()
+	s := initSys(env)
+	s.Export(new_var)
+	if !reflect.DeepEqual(expected, s.env) {
+		t.Fatalf("expected %v, result %v", expected, s.env)
+	}
 }
 
 func assertUnset(t *testing.T, key string, expected, env []string) {
