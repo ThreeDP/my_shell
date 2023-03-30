@@ -14,3 +14,4 @@ make rd
 ```
 make
 ```
+![Shell image](/readme/img/shell_run.jpeg)
