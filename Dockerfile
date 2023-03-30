@@ -1,7 +1,7 @@
 FROM golang:1.18
 
-WORKDIR /github.com/ThreeDP/shell/
-ADD . /github.com/ThreeDP/shell/
+WORKDIR /prod
+ADD . /prod/
 
 EXPOSE 5050
 

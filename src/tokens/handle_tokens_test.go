@@ -2,18 +2,30 @@ package tokens
 
 import (
 	"testing"
+	"reflect"
 )
 
-func TestTokenNew(t *testing.T) {
-	exp_cmds := []string {"ls", "-l", "-a"}
-	exp_type := OpCmd
-	exp_next := nil
-	t := Token{}
-	t.CreateToken(exp_cmds, exp_type, exp_next)
+func TestCreateToken(t *testing.T) {
 
+	t.Run("Test Create a node", func(t *testing.T) {
+		expected_token := &Token{Cmds: []string{"ls", "-l", "-a"}, Type: OpCmd}
+		token := &Token{}
+		token.CreateToken([]string{"ls", "-l", "-a"}, OpCmd)
+		checkValues(t, expected_token, token)
+	})
 }
 
-func (t Token) checkValues(t *testing.T, cmds []string, token TypeToken, next *Token) {
+/*
+func TestAddTokenBack(t *testing.T) {
+	token := &Token{}
+	expected_token := &token(Cmds: []string{"ls", "-l", "-a"}, Type: OpCmd, Next: &Token{Type: OpPipe})
+	token.CreateToken([string{"ls", "-l", "-a"}, Type: OpCmd])
+	token.AddTokenBack()
+}
+*/
+func checkValues(t *testing.T, expected *Token, token *Token) {
 	t.Helper()
-	if 
+	if !reflect.DeepEqual(expected, token) {
+		t.Fatalf("expected %v, result %v", expected, token)
+	}
 }
