@@ -26,3 +26,9 @@ func (token *Token) CreateToken(cmds []string, tt TypeToken) {
 	token.Cmds = cmds
 	token.Type = tt
 }
+
+func (token *Token) AddTokenBack(cmds []string, tt TypeToken) {
+	tail := &Token{}
+	tail.CreateToken(cmds, tt)
+	token.Next = tail
+}

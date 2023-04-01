@@ -15,14 +15,15 @@ func TestCreateToken(t *testing.T) {
 	})
 }
 
-/*
 func TestAddTokenBack(t *testing.T) {
 	token := &Token{}
-	expected_token := &token(Cmds: []string{"ls", "-l", "-a"}, Type: OpCmd, Next: &Token{Type: OpPipe})
-	token.CreateToken([string{"ls", "-l", "-a"}, Type: OpCmd])
-	token.AddTokenBack()
+	expected_token := &Token{Cmds: []string{"ls", "-l", "-a"}, Type: OpCmd, Next: &Token{Type: OpPipe}}
+	token.CreateToken([]string{"ls", "-l", "-a"}, OpCmd)
+	token.AddTokenBack([]string{}, OpPipe)
+	checkValues(t, expected_token, token)
+	checkValues(t, expected_token.Next, token.Next)
 }
-*/
+
 func checkValues(t *testing.T, expected *Token, token *Token) {
 	t.Helper()
 	if !reflect.DeepEqual(expected, token) {
